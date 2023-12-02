@@ -1,0 +1,23 @@
+Django Application:
+
+In your Django application, you define tasks that need to be performed asynchronously. These tasks are just Python functions or methods with the @task decorator.
+Message Broker (Redis):
+
+Redis is used as a message broker. When you want to execute an asynchronous task, your Django application sends a message to Redis. This message includes details about the task, like the function to run and its arguments.
+Celery Workers:
+
+Celery workers are separate processes running independently of your Django application. These workers constantly monitor Redis for new messages.
+Task Queue:
+
+
+
+CELERY_BEAT_SCHEDULE: This is a dictionary where you define the schedule for periodic tasks. It's a part of the Celery configuration for your Django project.
+
+'every-10-seconds': This is a unique identifier or name for the periodic task. It serves as a key in the CELERY_BEAT_SCHEDULE dictionary, and you can use it to reference and manage this specific task.
+
+'task': 'celery.tasks.clear_session_cache': Here, you specify the name of the Celery task that you want to schedule. In this case, you're scheduling the clear_session_cache task, which is defined in the celery.tasks module.
+
+'schedule': 10: This field defines the schedule for the task. It specifies that the task should run every 10 seconds. You can adjust this value to set the desired frequency for the task's execution.
+
+'args': ('11111', ): This field provides the arguments that should be passed to the clear_session_cache task when it's executed. In this example, you're passing a single argument, the string '11111', which represents the session ID to be cleared. The args should match the parameters expected by the clear_session_cache task.
+celery -A celerydemo beat -l info
